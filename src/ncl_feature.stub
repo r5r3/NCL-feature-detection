@@ -1,0 +1,7 @@
+C NCLFORTSTART
+subroutine detect_features(nx, ny, indata, res, fill_value)
+    integer nx, ny
+    real indata(nx,ny)
+    real res(nx,ny,3)
+    real fill_value
+C NCLEND
