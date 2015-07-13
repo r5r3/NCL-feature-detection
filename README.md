@@ -34,7 +34,7 @@ Output data:
 
 At first, you have to load the external library:
     
-    external LIBFEATURE "libfeature.so"
+    external LIBFEATURE "./libfeature.so"
 
 then you can call the procedure ```detect_features```:
 

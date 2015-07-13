@@ -7,7 +7,7 @@
 ;   test of the feature detection module
 ; ------------------------------------------
 
-external LIBFEATURE "libfeature.so"
+external LIBFEATURE "./libfeature.so"
 
 ; plot input data or features
 procedure plot(data, filename, nfeature)
