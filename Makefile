@@ -22,7 +22,7 @@ libfeature.so: build/ncl_feature.stub build/ncl_feature.f90 build/libfeature_obj
 
 # rule for files which need fplus preprocessor
 build/%.f90: src/%.F90
-	fplus $< -o $@
+	./fplus $< -o $@
 
 build/%.f90: src/%.f90
 	cp $< $@
