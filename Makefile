@@ -44,3 +44,7 @@ clean:
 	rm -rf build
 	rm -f libfeature.so
 	
+# create some test plots
+test:
+	ncl test-1.ncl
+	

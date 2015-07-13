@@ -45,13 +45,19 @@ begin
     feat@_FillValue = data@_FillValue
     LIBFEATURE::detect_features(dims(0), dims(1), data, feat, 0.5, data@_FillValue)
 
+    ; extected results
+    expected = (/1056, 392, 460, 366, 317/)
+
     ; show results
     nfeature = toint(max(feat))
     print("number of features: "+ nfeature)
     print("sizes of features:")
     do i = 1, nfeature
-        points_in_feature := ind(ndtooned(feat) .eq. i)
-        print("    -> feature " + i + ": " + dimsizes(points_in_feature))
+        points_in_feature := dimsizes(ind(ndtooned(feat) .eq. i))
+        if (expected(i-1) .ne. points_in_feature) then
+            print("ERROR: wrong number of points in feature " + i)
+        end if
+        print("    -> feature " + i + ": " + points_in_feature)
     end do
     
     ; plot input and output arrays
