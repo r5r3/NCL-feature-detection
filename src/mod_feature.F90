@@ -32,12 +32,11 @@ contains
     !> @brief       detect grid points that belong together within one feature
     !> @param[in]   indata          the input data array, 0=no feature, 1=feature
     !> @param[out]  res             (feature_index, feature_size(stored at center point), nx, ny) 
-    !> @param[in]   features        list object with all features
     !> @param[in]   fill_value      value used to indicate missing values in the input array and output array
-    subroutine detect_features_intern(indata, res, fill_value)
+    subroutine detect_features_intern(indata, res, threshold, fill_value)
         real, dimension(:,:), intent(in) :: indata
-        real, dimension(:,:,:), intent(inout) :: res
-        real, intent(in) :: fill_value
+        real, dimension(:,:), intent(inout) :: res
+        real, intent(in) :: threshold, fill_value
 
         ! a pointer to a new feature
         class(feature), pointer :: afeature => null()
@@ -54,14 +53,11 @@ contains
         ! the shapes of input and output data
         integer, dimension(2) :: in_shape
         integer, dimension(3) :: out_shape
-        ! the threshold used for feature detection
-        real(kind=8) :: threshold_intern
         ! list of all features
         type(list) :: features
         class(*), pointer :: temp
 
         ! some settings
-        threshold_intern = 0.0
         min_points = 1   
 
         ! create an empty list for all features
@@ -71,11 +67,11 @@ contains
         do lo = 1, size(indata,1)
             do la = 1, size(indata,2)
                 if (indata(lo,la) == fill_value) then
-                    res(:,lo,la) = fill_value
+                    res(lo,la) = fill_value
                     cycle
                 end if
                 ! this point belongs to a feature
-                if (indata(lo,la) > threshold_intern) then
+                if (indata(lo,la) > threshold) then
                     ! create a new point from this coordinates
                     apoint = point(lo, la, indata(lo,la))
                     ! ceate the first feature if not already done
@@ -150,13 +146,8 @@ contains
                 temp => afeature%points%get(j)
                 pointptr => dynamic_cast<type(point), pointer>(temp)
                 ! store all features in the first dimension
-                res(1, pointptr%x, pointptr%y) = i
+                res(pointptr%x, pointptr%y) = i
             end do
-            ! store the center position
-            apoint = afeature%get_center()
-            res(2, apoint%x, apoint%y) = afeature%points%length()
-            ! store the index of the feature also at the center position
-            res(3, apoint%x, apoint%y) = i
             ! cleanup points
             call afeature%points%clear()
         end do

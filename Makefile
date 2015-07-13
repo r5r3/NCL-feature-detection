@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=
 FC=gfortran
-FCFLAGS=-Jbuild -ffree-line-length-none
+FCFLAGS=-Jbuild -ffree-line-length-none #-fbacktrace -fbounds-check
 
 
 all: build fplus libfeature.so
